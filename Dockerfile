@@ -6,7 +6,7 @@ RUN rm -rf /usr/local/tomcat/webapps/ROOT/*
 
 ADD webapp/ /usr/local/tomcat/webapps/ROOT/
 
-## Create non-root user 
+## Create non-root user type
 RUN useradd -ms /bin/bash mario \
     && usermod -aG mario mario \
     && chown -R mario:mario /usr/local/tomcat
