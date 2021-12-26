@@ -1,18 +1,10 @@
-FROM tomcat:9
+FROM node:alpine
+COPY . /wd
+RUN cd /wd && npm install && npm run build
 
-MAINTAINER github.com/PengBAI
-
-RUN rm -rf /usr/local/tomcat/webapps/ROOT/*
-
-ADD webapp/ /usr/local/tomcat/webapps/ROOT/
-
-## Create non-root user type
-RUN useradd -ms /bin/bash mario \
-    && usermod -aG mario mario \
-    && chown -R mario:mario /usr/local/tomcat
+FROM node:alpine
+COPY --from=0 /wd/dist /
+RUN mkdir -p /data/roms && mkdir -p /data/screen
+CMD node /server
 
 EXPOSE 8080
-CMD ["catalina.sh", "run"]
-
-USER mario
-
